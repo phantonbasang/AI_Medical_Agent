@@ -1,0 +1,103 @@
+# ============================================================
+# AI Medical Agent - Centralized Configuration
+# ============================================================
+# Copy .env.example to .env and fill in your API keys.
+# All sensitive values must come from environment variables.
+# ============================================================
+
+# ---------------------------
+# LLM Settings
+# ---------------------------
+llm:
+  provider: groq                          # groq | openai | anthropic
+  model: llama-3.1-8b-instant             # Primary model
+  fallback_model: llama-3.3-70b-versatile # Used when primary fails
+  temperature: 0.1
+  max_tokens: 2048
+  max_retries: 3
+  timeout: 30                             # seconds
+
+# ---------------------------
+# Embedding Settings
+# ---------------------------
+embedding:
+  model: BAAI/bge-small-en-v1.5          # FastEmbed model name
+  cache_folder: ./embeddings_cache        # Local cache to avoid re-download
+  batch_size: 64
+
+# ---------------------------
+# RAG / ChromaDB Settings
+# ---------------------------
+rag:
+  chunk_size: 900
+  chunk_overlap: 175
+  top_k: 5                               # Number of retrieved docs
+  chroma_persist_dir: ./chroma_medical_db
+  collection_name: medical_knowledge_base
+
+# ---------------------------
+# Data Sources
+# ---------------------------
+data:
+  pubmedqa_limit: 1000                   # Max samples from PubMedQA
+  medquad_limit: 1000                    # Max samples from MedQuAD
+  raw_dir: ./data/raw
+  processed_dir: ./data/processed
+  results_dir: ./data/results
+
+# ---------------------------
+# Agent Settings
+# ---------------------------
+agents:
+  # Urgency threshold for emergency route (1-5 scale)
+  emergency_urgency_threshold: 4
+  # Keywords triggering instant emergency bypass
+  emergency_keywords:
+    - chest pain
+    - heart attack
+    - stroke
+    - can't breathe
+    - cannot breathe
+    - difficulty breathing
+    - severe bleeding
+    - loss of consciousness
+    - unconscious
+    - overdose
+    - poisoning
+    - suicide
+    - seizure
+    - anaphylaxis
+    - allergic reaction
+
+# ---------------------------
+# Supervisor Routing
+# ---------------------------
+supervisor:
+  routes:
+    - rag_agent        # General medical Q&A
+    - symptom_agent    # Symptom assessment & triage
+    - drug_agent       # Drug/medication info
+    - lifestyle_agent  # Prevention & wellness
+    - emergency_agent  # Critical / life-threatening
+
+# ---------------------------
+# Evaluation Settings
+# ---------------------------
+evaluation:
+  ragas_metrics:
+    - answer_relevancy
+    - faithfulness
+    - context_precision
+    - context_recall
+  benchmark_cases_file: ./data/results/benchmark_cases.json
+  output_dir: ./data/results
+
+# ---------------------------
+# Logging
+# ---------------------------
+logging:
+  level: INFO                            # DEBUG | INFO | WARNING | ERROR
+  file: ./medical_agent.log
+  format: "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+  max_bytes: 10485760                    # 10 MB
+  backup_count: 3
