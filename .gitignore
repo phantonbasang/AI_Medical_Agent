@@ -1,0 +1,71 @@
+# ============================================================
+# AI Medical Agent — .gitignore
+# ============================================================
+
+# --- Secrets ---
+.env
+*.pem
+*.key
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.whl
+site-packages/
+
+# --- Virtual environments ---
+.venv/
+venv/
+env/
+ENV/
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# --- Vector store & model caches (large binary data) ---
+chroma_medical_db/
+embeddings_cache/
+*.chroma
+
+# --- Data (raw datasets are downloaded at runtime) ---
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+# Keep results directory structure but not generated files
+data/results/*
+!data/results/.gitkeep
+
+# --- Logs ---
+*.log
+medical_agent.log*
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Test & coverage ---
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+*.pytest_cache
+
+# --- MyPy ---
+.mypy_cache/
